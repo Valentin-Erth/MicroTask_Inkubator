@@ -1,25 +1,28 @@
 import React, { useState } from "react"
-// type MoneyType = {
-//     moneyBanknot: Array<BanknotaType>
-// }
-// type BanknotaType = {
-//     banknots: string
-//     value: number
-//     number: string
-// }
-export const Money = () => {
-    const [money, setMoney] = useState([
-        { banknots: 'Dollars', value: 100, number: ' a1234567890' },
-        { banknots: 'Dollars', value: 50, number: ' z1234567890' },
-        { banknots: 'RUBLS', value: 100, number: ' w1234567890' },
-        { banknots: 'Dollars', value: 100, number: ' e1234567890' },
-        { banknots: 'Dollars', value: 50, number: ' c1234567890' },
-        { banknots: 'RUBLS', value: 100, number: ' r1234567890' },
-        { banknots: 'Dollars', value: 50, number: ' x1234567890' },
-        { banknots: 'RUBLS', value: 50, number: ' v1234567890' },
-    ])
+type MoneyType = {
+    moneyBanknot: Array<BanknotaType>
+}
+type BanknotaType = {
+    banknots: string
+    value: number
+    number: string
+}
+type FilterType = "all" | "RUBLS" | "Dollars"
 
-    let currentMoney = money.filter(el => el.banknots === "RUBLS")
+export const Money = (props: MoneyType) => {
+
+    const [filter, setFilter] = useState<FilterType>("all")
+    let currentMoney = props.moneyBanknot;
+    if (filter === "RUBLS") {
+        currentMoney = props.moneyBanknot.filter(el => el.banknots === "RUBLS");
+    }
+    if (filter === "Dollars") {
+        currentMoney = props.moneyBanknot.filter(el => el.banknots === "Dollars");
+    }
+
+    const onClicFilterHandler = (nameButton: FilterType) => {
+        setFilter(nameButton)
+    }
     return (
         <><ul>
             {currentMoney.map((el, index) => {
@@ -29,11 +32,14 @@ export const Money = () => {
                         <span>  {el.value}</span>
                         <span>  {el.number}</span>
                     </li>
-
                 )
-
             })}
         </ul>
+            <div style={{ marginLeft: "35px" }}>
+                <button onClick={() => onClicFilterHandler("all")}>all</button>
+                <button onClick={() => onClicFilterHandler("RUBLS")}>RUBLS</button>
+                <button onClick={() => onClicFilterHandler("Dollars")}>Dollars</button>
+            </div>
         </>
     );
 }
